@@ -31,6 +31,7 @@ final class CommandLineOptions {
   private final ImmutableRangeSet<Integer> lines;
   private final ImmutableList<Integer> offsets;
   private final ImmutableList<Integer> lengths;
+  private final int maxLineLength;
   private final boolean aosp;
   private final boolean version;
   private final boolean help;
@@ -50,6 +51,7 @@ final class CommandLineOptions {
       ImmutableRangeSet<Integer> lines,
       ImmutableList<Integer> offsets,
       ImmutableList<Integer> lengths,
+      int maxLineLength,
       boolean aosp,
       boolean version,
       boolean help,
@@ -67,6 +69,7 @@ final class CommandLineOptions {
     this.lines = lines;
     this.offsets = offsets;
     this.lengths = lengths;
+    this.maxLineLength = maxLineLength;
     this.aosp = aosp;
     this.version = version;
     this.help = help;
@@ -104,6 +107,11 @@ final class CommandLineOptions {
   /** Partial formatting region lengths, paired with {@code offsets}. */
   ImmutableList<Integer> lengths() {
     return lengths;
+  }
+
+  /** Set the max line length to reflow */
+  int maxLineLength() {
+    return maxLineLength;
   }
 
   /** Use AOSP style instead of Google Style (4-space indentation). */
@@ -182,6 +190,7 @@ final class CommandLineOptions {
     private final ImmutableList.Builder<Integer> offsets = ImmutableList.builder();
     private final ImmutableList.Builder<Integer> lengths = ImmutableList.builder();
     private boolean inPlace = false;
+    private int maxLineLength = Formatter.MAX_LINE_LENGTH;
     private boolean aosp = false;
     private boolean version = false;
     private boolean help = false;
@@ -220,6 +229,11 @@ final class CommandLineOptions {
 
     Builder aosp(boolean aosp) {
       this.aosp = aosp;
+      return this;
+    }
+
+    Builder maxLineLength(int maxLineLength) {
+      this.maxLineLength = maxLineLength;
       return this;
     }
 
@@ -285,6 +299,7 @@ final class CommandLineOptions {
           lines.build(),
           offsets.build(),
           lengths.build(),
+          maxLineLength,
           aosp,
           version,
           help,

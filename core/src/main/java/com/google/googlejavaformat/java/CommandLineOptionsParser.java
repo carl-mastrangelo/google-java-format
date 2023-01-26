@@ -67,6 +67,10 @@ final class CommandLineOptionsParser {
         case "--replace":
           optionsBuilder.inPlace(true);
           break;
+        case "--max-line-length":
+        case "-max-line-length":
+          optionsBuilder.maxLineLength(parseInteger(it, flag, value));
+          break;
         case "--lines":
         case "-lines":
         case "--line":

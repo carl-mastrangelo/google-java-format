@@ -47,10 +47,12 @@ public class JavaFormatterOptions {
     }
   }
 
+  private final int maxLineLength;
   private final Style style;
   private final boolean formatJavadoc;
 
-  private JavaFormatterOptions(Style style, boolean formatJavadoc) {
+  private JavaFormatterOptions(int maxLineLength, Style style, boolean formatJavadoc) {
+    this.maxLineLength = maxLineLength;
     this.style = style;
     this.formatJavadoc = formatJavadoc;
   }
@@ -69,6 +71,11 @@ public class JavaFormatterOptions {
     return style;
   }
 
+  /** Returns the max line length */
+  public int maxLineLength() {
+    return maxLineLength;
+  }
+
   /** Returns the default formatting options. */
   public static JavaFormatterOptions defaultOptions() {
     return builder().build();
@@ -81,6 +88,7 @@ public class JavaFormatterOptions {
 
   /** A builder for {@link JavaFormatterOptions}. */
   public static class Builder {
+    private int maxLineLength = Formatter.MAX_LINE_LENGTH;
     private Style style = Style.GOOGLE;
     private boolean formatJavadoc = true;
 
@@ -96,8 +104,13 @@ public class JavaFormatterOptions {
       return this;
     }
 
+    public Builder maxLineLength(int maxLineLength) {
+      this.maxLineLength = maxLineLength;
+      return this;
+    }
+
     public JavaFormatterOptions build() {
-      return new JavaFormatterOptions(style, formatJavadoc);
+      return new JavaFormatterOptions(maxLineLength, style, formatJavadoc);
     }
   }
 }
